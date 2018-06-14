@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import *as slideAction from '../action/slideAction';
+import *as addAction from '../action/addAction';
 
 const screenHeigth = Dimensions.get('window').height;
 
@@ -66,7 +67,7 @@ class App extends Component<Props> {
 
     render() {
 
-        const {num,leftSlideFn,rightSlideFn} = this.props;
+        const {num,leftSlideFn,rightSlideFn,count,ADDFN,DDAFN} = this.props;
         return (
             <View style={styles.container}>
                 <Text style={styles.welcome}>
@@ -83,6 +84,9 @@ class App extends Component<Props> {
                 <Text style={styles.instructions}>
                     描述-{global.DESCRIBE}
                 </Text>
+                <Text onPress={ADDFN}>加</Text>
+                <Text>{count}</Text>
+                <Text onPress={DDAFN}>减</Text>
                 <Text onPress={num <8 ? rightSlideFn : null}>点我 +</Text>
                 <Text onPress={num >0 ? leftSlideFn : null}>点我 -</Text>
                 {this.spotModule(9,num)}
@@ -147,9 +151,12 @@ const styles = StyleSheet.create({
 export default connect(
     (state) => ({
         num:state.slide.num,
+        count:state.add.get('count')
     }),
     (dispatch => ({
         leftSlideFn:() => dispatch(slideAction.leftSlide()),
         rightSlideFn:() => dispatch(slideAction.rightSlide()),
+        ADDFN:() => dispatch(addAction.ADD()),
+        DDAFN:() => dispatch(addAction.DDA()),
     }))
 )(App)
